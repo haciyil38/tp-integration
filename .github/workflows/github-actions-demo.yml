@@ -1,13 +1,22 @@
 name: GitHub Actions Demo
 
 on:
-  schedule:
-    - cron: "* * * * *"
+  workflow_dispatch:
 
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
       - run: python job.py
+
+      - name: Creer un fichier
+        run: echo "Bonjour depuis ma pipeline GitHub Actions" > resultat.txt
+
+      - name: Upload de l'artefact
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultat
+          path: resultat.txt
