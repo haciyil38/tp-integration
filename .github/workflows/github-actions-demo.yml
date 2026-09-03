@@ -10,7 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: python job.py
+      - name: Execution du script Python
+        env:
+          SECRET_API_TOKEN: ${{ secrets.SECRET_API_TOKEN }}
+        run: python job.py
 
       - name: Creer un fichier
         run: echo "Bonjour depuis ma pipeline GitHub Actions" > resultat.txt
