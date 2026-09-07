@@ -1,4 +1,4 @@
-name: Tests unitaires
+name: Tests unitaires et déploiement
 
 on: [push]
 
@@ -12,3 +12,12 @@ jobs:
 
       - name: Lancer les tests unitaires
         run: python3 test_addition.py
+
+      - name: Installer sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+
+      - name: Envoyer le code sur Ubuntu
+        env:
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+        run: |
+          sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ./* ubuntu@20.56.74.49:~/HY/tp-integration/
