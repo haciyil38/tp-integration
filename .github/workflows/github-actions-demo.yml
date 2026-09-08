@@ -17,3 +17,12 @@ jobs:
         env:
           SECRET_API_TOKEN: ${{ secrets.SECRET_API_TOKEN }}
         run: docker run --rm -e SECRET_API_TOKEN="$SECRET_API_TOKEN" tp-addition
+      
+      - name: Construire l'image COPY
+        run: docker build -t exercice-copy ./exercice-copy
+
+      - name: Vérifier que app.py est présent
+        run: docker run --rm exercice-copy ls -la
+
+      - name: Exécuter app.py
+        run: docker run --rm exercice-copy python3 app.py
