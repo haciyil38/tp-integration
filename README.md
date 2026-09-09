@@ -252,7 +252,7 @@ Réponse :
 L'application est accessible via l'adresse IP publique de la VM :
 
 ```text
-http://IP_PUBLIQUE_DE_LA_VM/health
+http://51.44.169.123/health
 ```
 
 La réponse attendue est :
