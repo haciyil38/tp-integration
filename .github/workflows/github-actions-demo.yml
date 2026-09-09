@@ -79,3 +79,28 @@ jobs:
 
       - name: Push vers Docker Hub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/clienthub:latest
+  
+  deploy:
+    name: Deploy sur AWS
+    runs-on: ubuntu-latest
+    needs:
+      - unit-tests
+      - e2e-tests
+      - build-and-push
+
+    steps:
+      - name: Déployer sur la VM AWS
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USER }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          script: |
+            docker pull wrldofh/clienthub:latest
+            docker rm -f myapp || true
+            docker run -d --name myapp -p 80:5000 wrldofh/clienthub:latest
+
+      - name: Vérifier le déploiement
+        run: |
+          sleep 5
+          curl --fail http://${{ secrets.AWS_HOST }}/health
